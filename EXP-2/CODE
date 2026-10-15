@@ -1,0 +1,55 @@
+import csv
+
+data = [
+    ['Sunny','Warm','Normal','Strong','Warm','Same','Yes'],
+    ['Sunny','Warm','High','Strong','Warm','Same','Yes'],
+    ['Rainy','Cold','High','Strong','Warm','Change','No'],
+    ['Sunny','Warm','High','Strong','Cool','Change','Yes']
+]
+
+with open('training.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(data)
+
+with open('training.csv', 'r') as f:
+    training_data = list(csv.reader(f))
+
+S = training_data[0][:-1]
+G = [['?' for i in range(len(S))]]
+
+print("Initial S:", S)
+print("Initial G:", G)
+
+for row in training_data[1:]:
+    x = row[:-1]
+    label = row[-1]
+
+    if label == 'Yes':
+        for i in range(len(S)):
+            if S[i] != x[i]:
+                S[i] = '?'
+
+        G = [g for g in G if all(
+            g[i] == '?' or g[i] == x[i]
+            for i in range(len(S))
+        )]
+
+    else:
+        new_G = []
+
+        for g in G:
+            for i in range(len(S)):
+                if S[i] != '?' and S[i] != x[i]:
+                    new_g = g.copy()
+                    new_g[i] = S[i]
+                    if new_g not in new_G:
+                        new_G.append(new_g)
+
+        G = new_G
+
+print("\nFinal Specific Hypothesis:")
+print(S)
+
+print("\nFinal General Hypothesis:")
+for g in G:
+    print(g)
