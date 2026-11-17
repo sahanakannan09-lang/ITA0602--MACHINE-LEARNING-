@@ -1,0 +1,27 @@
+
+from sklearn.linear_model import LogisticRegression
+
+# Training data
+X = [[1], [2], [3], [4], [5], [6]]
+y = [0, 0, 0, 1, 1, 1]
+
+# Create Logistic Regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X, y)
+
+# Test data
+test_data = [[4.5]]
+
+# Prediction
+prediction = model.predict(test_data)
+
+print("Logistic Regression Algorithm")
+print("Test Data:", test_data)
+print("Predicted Class:", prediction[0])
+
+if prediction[0] == 1:
+    print("Result: Positive")
+else:
+    print("Result: Negative")
